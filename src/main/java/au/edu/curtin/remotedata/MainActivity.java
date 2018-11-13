@@ -23,8 +23,22 @@ import java.security.GeneralSecurityException;
 
 import javax.net.ssl.HttpsURLConnection;
 
+/*
+
+SEVER STUFF
+
+const REQUIRED_PATH = "/testwebservice/rest";
+const REQUIRED_PARAMS = {
+    'method': 'thedata.getit',
+    'api_key': '01189998819991197253',
+    'format': 'json'
+};
+
+*/
+
 public class MainActivity extends AppCompatActivity {
     private static final String URL_STRING = "https://134.7.234.97:8000";
+    private static final String URL_PATH = "/testwebservice/rest";
     private static final String TAG = "MainActivity";
 
     private ProgressBar progressBar;
@@ -103,7 +117,14 @@ public class MainActivity extends AppCompatActivity {
             HttpsURLConnection connection = null;
 
             try {
-                URL url = new URL(URL_STRING);
+                String urlString =
+                        Uri.parse(URL_STRING + URL_PATH)
+                        .buildUpon()
+                        .appendQueryParameter("method", "thedata.getit")
+                        .appendQueryParameter("api_key", "01189998819991197253")
+                        .appendQueryParameter("format", "json")
+                        .build().toString();
+                URL url = new URL(urlString);
                 connection = (HttpsURLConnection) url.openConnection();
                 DownloadUtils.addCertificate(MainActivity.this, connection);
             }
